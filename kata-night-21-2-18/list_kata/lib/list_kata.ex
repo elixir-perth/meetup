@@ -7,18 +7,31 @@ defmodule ListKata do
   # automatically imported) and so shouldn't be used either.
 
   @spec count(list) :: non_neg_integer
-  def count(l) do
+  def count([]), do: 0
 
+  def count(list) do
+    count(list, 0)
   end
+
+  def count([], acc), do: acc
+  def count([_ | tail], acc), do: count(tail, acc + 1)
 
   @spec map(list, (any -> any)) :: list
-  def map(l, f) do
+  def map([], _), do: []
+  def map([head | rest], fun), do: map(rest, fun, [fun.(head)])
+  def map([head | rest], fun, acc), do: map(rest, fun, [fun.(head) | acc])
+  def map([], _fun, acc), do: reverse(acc)
 
-  end
+  @spec reverse(list) :: list
+  def reverse([]), do: []
+  def reverse([_] = list), do: list
+  def reverse(list), do: reverse(list, [])
+
+  def reverse([ head | rest ], acc), do: reverse(rest, [head | acc])
+  def reverse([], acc), do: acc
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
-
   end
 
   @type acc :: any
